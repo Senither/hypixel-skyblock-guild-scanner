@@ -1,0 +1,10 @@
+# Node & NPM
+node_modules/
+
+# Generated assets directories
+public/css
+public/js
+mix-manifest\.json
+
+# Editor files
+.vscode/
