@@ -10,5 +10,5 @@ export default [
     path: '/*',
     name: 'not-found',
     redirect: '/',
-  }
+  },
 ]
