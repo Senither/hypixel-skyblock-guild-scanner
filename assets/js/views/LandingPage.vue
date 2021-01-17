@@ -81,19 +81,42 @@
             <div class="mt-2">
               <input
                 type="text"
+                v-model="hypixelToken"
                 placeholder="Enter your Hypixel API token here..."
                 class="p-2 w-full rounded-md bg-gray-900 text-gray-300 placeholder-gray-600 outline-none"
               />
+            </div>
+            <div class="mt-2" v-if="errors.length">
+              <ul class="text-sm text-red-400">
+                <li v-for="error of errors">{{ error }}</li>
+              </ul>
             </div>
           </div>
         </template>
 
         <template #footer>
           <button
+            @click="verifyApiKey"
             type="button"
             class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-900 text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
           >
-            Continue
+            <span class="flex" v-if="isLoading">
+              <svg
+                class="animate-spin -ml-1 mr-3 h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Verifying
+            </span>
+            <span v-else>Continue</span>
           </button>
           <button
             @click="showModal = false"
@@ -123,7 +146,45 @@ export default {
   data() {
     return {
       showModal: false,
+      isLoading: false,
+      hypixelToken: '',
+      errors: [],
     }
+  },
+
+  methods: {
+    verifyApiKey() {
+      this.validateHypixelToken()
+
+      if (this.errors.length || this.isLoading) {
+        return
+      }
+
+      this.isLoading = true
+
+      axios
+        .get(`/key?key=${this.hypixelToken.trim()}`)
+        .then(response => {
+          // TODO: Save token in VueX store and move to the next
+          // page so people can start scanning a guild.
+          console.log(response.data)
+        })
+        .catch(error => {
+          this.errors = ['Invalid Hypixel API token provided, the token is not valid, or does not exists!']
+
+          this.isLoading = false
+        })
+    },
+
+    validateHypixelToken() {
+      if (this.hypixelToken.trim().length == 0) {
+        this.errors = ['Missing Hypixel API token, you must enter your Hypixel API token to continue.']
+      } else if (this.hypixelToken.trim().length !== 36) {
+        this.errors = ['Invalid Hypixel API token, the token must be 36 characters long!']
+      } else if (this.hypixelToken.split('-').length !== 5) {
+        this.errors = ['Invalid Hypixel API token, the token must contain four dashes(-)']
+      }
+    },
   },
 }
 </script>
