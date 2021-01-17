@@ -166,6 +166,10 @@ export default {
         .get(`/key?key=${this.hypixelToken.trim()}`)
         .then(response => {
           this.$store.commit('SET_TOKEN', this.hypixelToken.trim())
+
+          this.$router.push({
+            name: 'select-guild',
+          })
         })
         .catch(error => {
           this.errors = ['Invalid Hypixel API token provided, the token is not valid, or does not exists!']
