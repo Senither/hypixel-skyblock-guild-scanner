@@ -165,9 +165,7 @@ export default {
       axios
         .get(`/key?key=${this.hypixelToken.trim()}`)
         .then(response => {
-          // TODO: Save token in VueX store and move to the next
-          // page so people can start scanning a guild.
-          console.log(response.data)
+          this.$store.commit('SET_TOKEN', this.hypixelToken.trim())
         })
         .catch(error => {
           this.errors = ['Invalid Hypixel API token provided, the token is not valid, or does not exists!']

@@ -6,13 +6,15 @@ window.axios = Axios.create({
   timeout: 10000,
 })
 
+import store from './store'
 import router from './router'
 import App from './views/App'
 
 const app = new Vue({
   el: '#app',
   components: {
-    App
+    App,
   },
-  router
+  router,
+  store,
 })
