@@ -1,5 +1,6 @@
 import LandingPage from '@/views/LandingPage'
 import SelectGuild from '@/views/SelectGuild'
+import ScanGuild from '@/views/ScanGuild'
 
 export default [
   {
@@ -11,6 +12,11 @@ export default [
     path: '/select-guild',
     name: 'select-guild',
     component: SelectGuild,
+  },
+  {
+    path: '/scanning',
+    name: 'scan-guild',
+    component: ScanGuild,
   },
   {
     path: '/*',

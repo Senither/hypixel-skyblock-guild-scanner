@@ -132,7 +132,11 @@ export default {
     },
 
     scan() {
-      // TODO: Continue the scan here...
+      this.$store.commit('SET_GUILD', this.guild)
+
+      return this.$router.push({
+        name: 'scan-guild',
+      })
     },
 
     reset() {
