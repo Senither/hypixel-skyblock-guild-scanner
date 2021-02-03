@@ -2,12 +2,8 @@
   <div>
     <section class="pt-16 pb-6">
       <div class="max-w-screen-xl mx-auto text-center">
-        <h1 class="text-gray-100 text-5xl font-medium leading-tight">
-          Select Guild
-        </h1>
-        <p class="text-gray-500 text-2xl">
-          Enter the name of the guild you want to scan below.
-        </p>
+        <h1 class="text-gray-100 text-5xl font-medium leading-tight">Select Guild</h1>
+        <p class="text-gray-500 text-2xl">Enter the name of the guild you want to scan below.</p>
       </div>
     </section>
 
@@ -56,13 +52,9 @@
 
             <p class="pt-10">
               Do you want to
-              <a @click="scan" class="py-2 px-3 bg-indigo-800 hover:bg-indigo-700 text-white rounded-md cursor-pointer">
-                continue to scan the guild
-              </a>
+              <a @click="scan" class="py-2 px-3 bg-indigo-800 hover:bg-indigo-700 text-white rounded-md cursor-pointer"> continue to scan the guild </a>
               or
-              <a @click="reset" class="py-2 px-3 bg-gray-800 hover:bg-gray-700 text-white rounded-md cursor-pointer">
-                search for another guild to scan
-              </a>
+              <a @click="reset" class="py-2 px-3 bg-gray-800 hover:bg-gray-700 text-white rounded-md cursor-pointer"> search for another guild to scan </a>
             </p>
           </div>
         </div>

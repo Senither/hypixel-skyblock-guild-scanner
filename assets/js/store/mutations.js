@@ -5,5 +5,5 @@ export default {
 
   SET_GUILD: (state, guild) => {
     state.guild = guild
-  },
+  }
 }

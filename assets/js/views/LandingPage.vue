@@ -2,12 +2,8 @@
   <div>
     <section class="py-6 sm:py-16">
       <div class="max-w-screen-xl mx-auto text-center">
-        <h1 class="text-gray-100 text-6xl font-medium leading-tight sm:text-7xl">
-          Guild Scanner
-        </h1>
-        <p class="text-gray-500 text-2xl sm:text-3xl">
-          Making scanning Hypixel SkyBlock guilds quick and easy.
-        </p>
+        <h1 class="text-gray-100 text-6xl font-medium leading-tight sm:text-7xl">Guild Scanner</h1>
+        <p class="text-gray-500 text-2xl sm:text-3xl">Making scanning Hypixel SkyBlock guilds quick and easy.</p>
       </div>
     </section>
 
@@ -15,21 +11,17 @@
       <div class="max-w-screen-lg mx-auto">
         <div class="bg-gray-800 px-8 py-6 lg:rounded-md text-base shadow-2xl">
           <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet eius, modi nostrum a doloremque magnam
-            officiis culpa accusamus sed praesentium asperiores! Molestiae quo voluptates aliquam natus qui quod ipsa
-            cupiditate?
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet eius, modi nostrum a doloremque magnam officiis culpa accusamus sed praesentium
+            asperiores! Molestiae quo voluptates aliquam natus qui quod ipsa cupiditate?
           </p>
 
           <div class="py-4 grid grid-cols-1 lg:grid-cols-2 gap-2">
             <question v-for="_ of [1, 2, 3, 4, 5, 6]" :key="_">
-              <template #question>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </template>
+              <template #question> Lorem ipsum dolor sit amet consectetur adipisicing elit. </template>
 
               <template #answer>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non animi rerum pariatur laudantium! Animi
-                accusamus recusandae praesentium vel beatae voluptas aperiam esse voluptatum autem, quas dolores,
-                laborum mollitia ex assumenda!
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non animi rerum pariatur laudantium! Animi accusamus recusandae praesentium vel beatae
+                voluptas aperiam esse voluptatum autem, quas dolores, laborum mollitia ex assumenda!
               </template>
             </question>
           </div>
@@ -49,18 +41,9 @@
     <transition-element>
       <modal :show="showModal" @close="showModal = false">
         <template #content>
-          <div
-            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-gray-800 sm:mx-0 sm:h-10 sm:w-10"
-          >
+          <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-gray-800 sm:mx-0 sm:h-10 sm:w-10">
             <!-- Heroicon name: exclamation -->
-            <svg
-              class="h-6 w-6 text-gray-200"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
+            <svg class="h-6 w-6 text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -70,13 +53,9 @@
             </svg>
           </div>
           <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <h3 class="text-lg leading-6 font-medium text-gray-300" id="modal-headline">
-              Enter your Hypixel API token to continue
-            </h3>
+            <h3 class="text-lg leading-6 font-medium text-gray-300" id="modal-headline">Enter your Hypixel API token to continue</h3>
             <div class="mt-2">
-              <p class="text-sm text-gray-400">
-                Your Hypixel API token is required for loading guild and player data from the Hypixels API.
-              </p>
+              <p class="text-sm text-gray-400">Your Hypixel API token is required for loading guild and player data from the Hypixels API.</p>
             </div>
             <div class="mt-2">
               <input
@@ -88,7 +67,7 @@
             </div>
             <div class="mt-2" v-if="errors.length">
               <ul class="text-sm text-red-400">
-                <li v-for="error of errors">{{ error }}</li>
+                <li v-for="error of errors" :key="error">{{ error }}</li>
               </ul>
             </div>
           </div>

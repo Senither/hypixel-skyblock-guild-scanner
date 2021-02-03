@@ -3,7 +3,7 @@ import Axios from 'axios'
 
 window.axios = Axios.create({
   baseURL: 'https://api.hypixel.net/',
-  timeout: 10000,
+  timeout: 10000
 })
 
 import store from './store'
@@ -13,8 +13,8 @@ import App from './views/App'
 const app = new Vue({
   el: '#app',
   components: {
-    App,
+    App
   },
   router,
-  store,
+  store
 })

@@ -7,11 +7,7 @@
     <footer class="relative mt-12 py-8 px-4 bg-gray-800 border-t-2 border-gray-700 text-center sm:py-10 sm:px-8">
       <p class="mt-2 text-gray-300 text-sm">
         Hypixel Guild Scanner, get the
-        <a
-          href="https://github.com/Senither/hypixel-skyblock-guild-scanner"
-          class="text-indigo-400 hover:text-indigo-500"
-          >source code</a
-        >
+        <a href="https://github.com/Senither/hypixel-skyblock-guild-scanner" class="text-indigo-400 hover:text-indigo-500">source code</a>
         on GitHub.
       </p>
       <p class="text-gray-300 text-xs">

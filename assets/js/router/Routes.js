@@ -6,21 +6,21 @@ export default [
   {
     path: '/',
     name: 'landing-page',
-    component: LandingPage,
+    component: LandingPage
   },
   {
     path: '/select-guild',
     name: 'select-guild',
-    component: SelectGuild,
+    component: SelectGuild
   },
   {
     path: '/scanning',
     name: 'scan-guild',
-    component: ScanGuild,
+    component: ScanGuild
   },
   {
     path: '/*',
     name: 'not-found',
-    redirect: '/',
-  },
+    redirect: '/'
+  }
 ]
