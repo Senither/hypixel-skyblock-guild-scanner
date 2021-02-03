@@ -154,6 +154,8 @@ export default {
         this.errors = ['Invalid Hypixel API token, the token must be 36 characters long!']
       } else if (this.hypixelToken.split('-').length !== 5) {
         this.errors = ['Invalid Hypixel API token, the token must contain four dashes(-)']
+      } else {
+        this.errors = []
       }
     },
   },
