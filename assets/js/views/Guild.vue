@@ -118,8 +118,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="player of sortedPlayers" :key="player.id">
-                    <td class="py-1">{{ player.username }}</td>
+                  <tr v-for="(player, index) of sortedPlayers" :key="player.id">
+                    <td class="py-1">
+                      <span class="py-1 px-2 bg-indigo-600 rounded-md text-sm">#{{ index + 1 }}</span>
+                      {{ player.username }}
+                    </td>
                     <td>{{ player.name }}</td>
                     <td>
                       <span>{{ formatNumber(player.weight + player.weight_overflow) }}</span>
