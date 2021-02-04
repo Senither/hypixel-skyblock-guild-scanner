@@ -63,10 +63,46 @@
       <section class="pb-6" v-if="players.length">
         <div class="max-w-screen-lg mx-auto shadow-2xl">
           <div class="min-w-full flex space-x-2">
-            <div class="flex-1 py-3 lg:rounded-t-md bg-gray-800 hover:bg-gray-800 text-center cursor-pointer">Sort by Skills</div>
-            <div class="flex-1 py-3 lg:rounded-t-md bg-gray-700 hover:bg-gray-800 text-center cursor-pointer">Sort by Catacombs</div>
-            <div class="flex-1 py-3 lg:rounded-t-md bg-gray-700 hover:bg-gray-800 text-center cursor-pointer">Sort by Slayers</div>
-            <div class="flex-1 py-3 lg:rounded-t-md bg-gray-700 hover:bg-gray-800 text-center cursor-pointer">Sort by Weight</div>
+            <div
+              class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
+              :class="{
+                'bg-gray-800': sortBy == 'weight',
+                'bg-gray-700': sortBy != 'weight',
+              }"
+              @click="sortBy = 'weight'"
+            >
+              Sort by Weight
+            </div>
+            <div
+              class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
+              :class="{
+                'bg-gray-800': sortBy == 'skills',
+                'bg-gray-700': sortBy != 'skills',
+              }"
+              @click="sortBy = 'skills'"
+            >
+              Sort by Skills
+            </div>
+            <div
+              class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
+              :class="{
+                'bg-gray-800': sortBy == 'dungeons',
+                'bg-gray-700': sortBy != 'dungeons',
+              }"
+              @click="sortBy = 'dungeons'"
+            >
+              Sort by Catacombs
+            </div>
+            <div
+              class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
+              :class="{
+                'bg-gray-800': sortBy == 'slayers',
+                'bg-gray-700': sortBy != 'slayers',
+              }"
+              @click="sortBy = 'slayers'"
+            >
+              Sort by Slayers
+            </div>
           </div>
           <div class="bg-gray-800 p-2 lg:rounded-b-md text-base text-gray-200">
             <div class="bg-gray-700 px-6 py-4 rounded-md">
@@ -82,7 +118,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="player of players" :key="player.id">
+                  <tr v-for="player of sortedPlayers" :key="player.id">
                     <td class="py-1">{{ player.username }}</td>
                     <td>{{ player.name }}</td>
                     <td>
@@ -148,6 +184,7 @@ export default {
       guild: this.$store.getters.guild,
       totalMembers: this.$store.getters.guild.members.length,
       players: [],
+      sortBy: 'weight',
       task: null,
     }
   },
@@ -238,6 +275,28 @@ export default {
         dungeons: parseFloat(dungeons.toFixed(3)),
         multiplier: parseFloat(multiplier.toFixed(3)),
       }
+    },
+
+    sortedPlayers() {
+      const extractProperty = player => {
+        switch (this.sortBy) {
+          case 'skills':
+            return player.skills == null ? 0 : player.skills.average_skills
+
+          case 'slayers':
+            return player.slayers == null ? 0 : player.slayers.total_experience
+
+          case 'dungeons':
+            return player.dungeons == null ? 0 : player.dungeons.types.catacombs.level
+
+          case 'weight':
+            return player.weight + player.weight_overflow
+        }
+      }
+
+      return this.players.sort((p1, p2) => {
+        return extractProperty(p2) > extractProperty(p1) ? 1 : -1
+      })
     },
   },
 }
