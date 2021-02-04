@@ -17,15 +17,15 @@
             <div class="flex justify-center space-x-2 pb-2">
               <div class="flex text-sm">
                 <div class="px-2 py-1 bg-gray-800 rounded-l-md">Average Skills</div>
-                <div class="px-2 py-1 bg-blue-600 rounded-r-md">{{ guildAverages.skills }}</div>
+                <div class="px-2 py-1 bg-blue-600 rounded-r-md">{{ formatNumber(guildAverages.skills) }}</div>
               </div>
               <div class="flex text-sm">
                 <div class="px-2 py-1 bg-gray-800 rounded-l-md">Slayers</div>
-                <div class="px-2 py-1 bg-red-500 rounded-r-md">{{ guildAverages.slayers }}</div>
+                <div class="px-2 py-1 bg-red-500 rounded-r-md">{{ formatNumber(guildAverages.slayers) }}</div>
               </div>
               <div class="flex text-sm">
                 <div class="px-2 py-1 bg-gray-800 rounded-l-md">Catacombs</div>
-                <div class="px-2 py-1 bg-green-500 rounded-r-md">{{ guildAverages.dungeons }}</div>
+                <div class="px-2 py-1 bg-green-500 rounded-r-md">{{ formatNumber(guildAverages.dungeons) }}</div>
               </div>
               <div class="flex text-sm">
                 <div class="px-2 py-1 bg-gray-800 rounded-l-md">Members</div>
@@ -35,23 +35,23 @@
             <div class="flex justify-center space-x-2">
               <div class="flex text-sm">
                 <div class="px-2 py-1 bg-gray-800 rounded-l-md">Total Weight</div>
-                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ guildWeights.total }}</div>
+                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ formatNumber(guildWeights.total) }}</div>
               </div>
               <div class="flex text-sm">
                 <div class="px-2 py-1 bg-gray-800 rounded-l-md">Skill Weight</div>
-                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ guildWeights.skills }}</div>
+                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ formatNumber(guildWeights.skills) }}</div>
               </div>
               <div class="flex text-sm">
                 <div class="px-2 py-1 bg-gray-800 rounded-l-md">Slayer Weight</div>
-                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ guildWeights.slayers }}</div>
+                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ formatNumber(guildWeights.slayers) }}</div>
               </div>
               <div class="flex text-sm">
                 <div class="px-2 py-1 bg-gray-800 rounded-l-md">Catacomb Weight</div>
-                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ guildWeights.dungeons }}</div>
+                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ formatNumber(guildWeights.dungeons) }}</div>
               </div>
               <div class="flex text-sm">
                 <div class="px-2 py-1 bg-gray-800 rounded-l-md">Weight Multiplier</div>
-                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ guildWeights.multiplier }}%</div>
+                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ formatNumber(guildWeights.multiplier * 100) }}%</div>
               </div>
             </div>
           </div>
@@ -111,10 +111,10 @@
                   <tr>
                     <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Name</th>
                     <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Profile</th>
+                    <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Weight</th>
                     <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Skills</th>
                     <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Catacombs</th>
                     <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Slayer XP</th>
-                    <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Weight</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -122,19 +122,19 @@
                     <td class="py-1">{{ player.username }}</td>
                     <td>{{ player.name }}</td>
                     <td>
+                      <span>{{ formatNumber(player.weight + player.weight_overflow) }}</span>
+                    </td>
+                    <td>
                       <span v-if="player.skills == null" class="px-2 py-1 bg-red-400 text-gray-800 text-sm rounded-md">API Disabled</span>
-                      <span v-else>{{ player.skills.average_skills.toFixed(2) }}</span>
+                      <span v-else>{{ formatNumber(player.skills.average_skills) }}</span>
                     </td>
                     <td>
                       <span v-if="player.dungeons == null" class="px-2 py-1 bg-red-400 text-gray-800 text-sm rounded-md">No Catacombs Data</span>
-                      <span v-else>{{ player.dungeons.types.catacombs.level.toFixed(2) }}</span>
+                      <span v-else>{{ formatNumber(player.dungeons.types.catacombs.level) }}</span>
                     </td>
                     <td>
                       <span v-if="player.slayers == null" class="px-2 py-1 bg-red-400 text-gray-800 text-sm rounded-md">No Slayer Data</span>
-                      <span v-else>{{ player.slayers.total_experience.toFixed(2) }}</span>
-                    </td>
-                    <td>
-                      <span>{{ (player.weight + player.weight_overflow).toFixed(2) }}</span>
+                      <span v-else>{{ formatNumber(player.slayers.total_experience) }}</span>
                     </td>
                   </tr>
                 </tbody>
@@ -211,6 +211,12 @@ export default {
 
     parseStringifiedUuid(uuid) {
       return uuid.substr(0, 8) + '-' + uuid.substr(8, 4) + '-' + uuid.substr(12, 4) + '-' + uuid.substr(16, 4) + '-' + uuid.substr(20)
+    },
+
+    formatNumber(number) {
+      const decimalsFormated = number.toLocaleString(undefined, { maximumFractionDigits: 2 })
+
+      return String(decimalsFormated).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     },
   },
 
