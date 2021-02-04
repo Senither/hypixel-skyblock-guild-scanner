@@ -6,10 +6,56 @@
           <span class="font-semibold text-indigo-400">[{{ guild.tag }}]</span>
           <span class="font-semibold text-indigo-300">{{ guild.name }}</span>
         </h1>
-        <p class="text-gray-500 text-2xl">
-          Scanning <span class="font-semibold text-indigo-300">{{ this.players.length + 1 }}</span> out of
-          <span class="font-semibold text-indigo-300">{{ totalMembers }}</span> members
-        </p>
+        <transition-element>
+          <p class="text-gray-500 text-2xl" v-if="players.length < totalMembers">
+            Scanning <span class="font-semibold text-indigo-300">{{ players.length + 1 }}</span> out of
+            <span class="font-semibold text-indigo-300">{{ totalMembers }}</span> members
+          </p>
+          <div v-else>
+            <p class="py-4 text-gray-500 text-3xl">Guild Stats</p>
+
+            <div class="flex justify-center space-x-2 pb-2">
+              <div class="flex text-sm">
+                <div class="px-2 py-1 bg-gray-800 rounded-l-md">Average Skills</div>
+                <div class="px-2 py-1 bg-blue-600 rounded-r-md">{{ guildAverages.skills }}</div>
+              </div>
+              <div class="flex text-sm">
+                <div class="px-2 py-1 bg-gray-800 rounded-l-md">Slayers</div>
+                <div class="px-2 py-1 bg-red-500 rounded-r-md">{{ guildAverages.slayers }}</div>
+              </div>
+              <div class="flex text-sm">
+                <div class="px-2 py-1 bg-gray-800 rounded-l-md">Catacombs</div>
+                <div class="px-2 py-1 bg-green-500 rounded-r-md">{{ guildAverages.dungeons }}</div>
+              </div>
+              <div class="flex text-sm">
+                <div class="px-2 py-1 bg-gray-800 rounded-l-md">Members</div>
+                <div class="px-2 py-1 bg-yellow-500 rounded-r-md">{{ totalMembers }}</div>
+              </div>
+            </div>
+            <div class="flex justify-center space-x-2">
+              <div class="flex text-sm">
+                <div class="px-2 py-1 bg-gray-800 rounded-l-md">Total Weight</div>
+                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ guildWeights.total }}</div>
+              </div>
+              <div class="flex text-sm">
+                <div class="px-2 py-1 bg-gray-800 rounded-l-md">Skill Weight</div>
+                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ guildWeights.skills }}</div>
+              </div>
+              <div class="flex text-sm">
+                <div class="px-2 py-1 bg-gray-800 rounded-l-md">Slayer Weight</div>
+                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ guildWeights.slayers }}</div>
+              </div>
+              <div class="flex text-sm">
+                <div class="px-2 py-1 bg-gray-800 rounded-l-md">Catacomb Weight</div>
+                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ guildWeights.dungeons }}</div>
+              </div>
+              <div class="flex text-sm">
+                <div class="px-2 py-1 bg-gray-800 rounded-l-md">Weight Multiplier</div>
+                <div class="px-2 py-1 bg-indigo-600 rounded-r-md">{{ guildWeights.multiplier }}%</div>
+              </div>
+            </div>
+          </div>
+        </transition-element>
       </div>
     </section>
 
@@ -37,7 +83,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="player of players" :key="player.id">
-                    <td class="py-1">Senither</td>
+                    <td class="py-1">{{ player.username }}</td>
                     <td>{{ player.name }}</td>
                     <td>
                       <span v-if="player.skills == null" class="px-2 py-1 bg-red-400 text-gray-800 text-sm rounded-md">API Disabled</span>
@@ -128,6 +174,70 @@ export default {
 
     parseStringifiedUuid(uuid) {
       return uuid.substr(0, 8) + '-' + uuid.substr(8, 4) + '-' + uuid.substr(12, 4) + '-' + uuid.substr(16, 4) + '-' + uuid.substr(20)
+    },
+  },
+
+  computed: {
+    guildAverages() {
+      let skills = 0
+      let slayers = 0
+      let dungeons = 0
+
+      for (let player of this.players) {
+        skills += player.skills == null ? 0 : player.skills.average_skills
+        slayers += player.slayers == null ? 0 : player.slayers.total_experience
+        dungeons += player.dungeons == null ? 0 : player.dungeons.types.catacombs.level
+      }
+
+      return {
+        skills: (skills / this.totalMembers).toFixed(2),
+        slayers: (slayers / this.totalMembers).toFixed(2),
+        dungeons: (dungeons / this.totalMembers).toFixed(2),
+      }
+    },
+
+    guildWeights() {
+      // Maxes out a level 50 average guild at 500 skill points, and
+      // setting the middle point in terms of points at level 41,
+      // which is the middle point in terms of XP in the game
+      let skills = Math.pow(this.guildAverages.skills * 10, 0.5 + this.guildAverages.skills / 100)
+
+      // Calculates the catacomb weight by powering it by 2, and then
+      // dividing the result by 8.333, this will end up rewarding
+      // 300 points at max level on a soft exponential curve.
+      let dungeons = Math.pow(this.guildAverages.dungeons, 2) / 8.3333333333333333
+
+      // Calcualtes the slayer weight with a flat curve,
+      // giving 1 point every 12,000 average slayer up
+      // to 3,000,000 XP, the weight past the 3 million
+      // limit is first divided by 18,000, and then
+      // reducded by 10%
+      let slayerOverflow = 3000000 - this.guildAverages.slayers
+      let slayers = slayerOverflow > 0 ? this.guildAverages.slayers / 12000 : (this.guildAverages.slayers + slayerOverflow) / 12000
+
+      if (slayerOverflow < 0) {
+        slayers += Math.pow((slayerOverflow * -1) / 18000, 0.9)
+      }
+
+      // Creates the multiplier, where the max value is 1 at 125 members
+      // which is the guild member limit on Hypixel, guilds with less
+      // points will have points deducted from their total score
+      // depending on the amount of missing players.
+      let frequency = Math.sin(this.totalMembers / (125 / 0.927296)) + 0.2
+      let multiplier = this.totalMembers / 125 + (1 - this.totalMembers / 125) * frequency
+
+      // Calculates the total amount of points for the guild by summing
+      // up our values and using our multiplier to deduct points
+      // if the guild has a low member count.
+      let total = (skills + dungeons + slayers) * multiplier
+
+      return {
+        total: parseFloat(total.toFixed(3)),
+        skills: parseFloat(skills.toFixed(3)),
+        slayers: parseFloat(slayers.toFixed(3)),
+        dungeons: parseFloat(dungeons.toFixed(3)),
+        multiplier: parseFloat(multiplier.toFixed(3)),
+      }
     },
   },
 }
