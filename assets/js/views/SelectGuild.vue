@@ -127,7 +127,7 @@ export default {
       this.$store.commit('SET_GUILD', this.guild)
 
       return this.$router.push({
-        name: 'scan-guild',
+        name: 'guild',
       })
     },
 
