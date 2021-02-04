@@ -8,7 +8,7 @@
         </h1>
         <p class="text-gray-500 text-2xl">
           Scanning <span class="font-semibold text-indigo-300">{{ this.players.length + 1 }}</span> out of
-          <span class="font-semibold text-indigo-300">{{ guild.members.length }}</span> members
+          <span class="font-semibold text-indigo-300">{{ totalMembers }}</span> members
         </p>
       </div>
     </section>
@@ -87,6 +87,14 @@ export default {
         name: 'landing-page',
       })
     }
+
+    setTimeout(() => this.scanPlayer(this.guild.members.shift()), 500)
+  },
+
+  beforeDestroy() {
+    if (this.task != null) {
+      clearInterval(this.task)
+    }
   },
 
   data() {
@@ -94,7 +102,33 @@ export default {
       guild: this.$store.getters.guild,
       totalMembers: this.$store.getters.guild.members.length,
       players: [],
+      task: null,
     }
+  },
+
+  methods: {
+    scanPlayer(member) {
+      axios
+        .get(`https://hypixel-api.senither.com/v1/profiles/${this.parseStringifiedUuid(member.uuid)}/weight`, {
+          headers: {
+            Authorization: this.$store.getters.token,
+          },
+        })
+        .then(response => {
+          this.players.push(response.data.data)
+
+          if (this.guild.members.length > 0) {
+            this.task = setTimeout(() => this.scanPlayer(this.guild.members.shift()), 1000)
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
+
+    parseStringifiedUuid(uuid) {
+      return uuid.substr(0, 8) + '-' + uuid.substr(8, 4) + '-' + uuid.substr(12, 4) + '-' + uuid.substr(16, 4) + '-' + uuid.substr(20)
+    },
   },
 }
 </script>
