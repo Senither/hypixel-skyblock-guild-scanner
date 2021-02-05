@@ -1,6 +1,9 @@
 # Node & NPM
 node_modules/
 
+# Composer
+vendor/
+
 # Generated assets directories
 public/css
 public/js
