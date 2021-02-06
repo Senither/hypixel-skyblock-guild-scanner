@@ -7,6 +7,7 @@ A [VueJS](https://vuejs.org/) and [TailwindCSS](https://tailwindcss.com/) app th
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
+- [License](#license)
 
 ### Prerequisites
 
