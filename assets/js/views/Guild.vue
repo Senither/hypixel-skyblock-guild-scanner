@@ -118,7 +118,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(player, index) of sortedPlayers" :key="player.id">
+                  <tr v-for="(player, index) of sortedPlayers" :key="player.uuid">
                     <td class="py-1">
                       <span class="py-1 px-2 bg-indigo-600 rounded-md text-sm">#{{ index + 1 }}</span>
                       {{ player.username }}
