@@ -106,42 +106,45 @@
           </div>
           <div class="bg-gray-800 p-2 lg:rounded-b-md text-base text-gray-200">
             <div class="bg-gray-700 px-6 py-4 rounded-md">
-              <table class="min-w-full">
-                <thead class="border-b border-gray-500">
-                  <tr>
-                    <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Name</th>
-                    <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Profile</th>
-                    <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Weight</th>
-                    <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Skills</th>
-                    <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Catacombs</th>
-                    <th class="py-3 text-left leading-4 text-gray-300 tracking-wider">Slayer XP</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(player, index) of sortedPlayers" :key="player.uuid">
-                    <td class="py-1">
-                      <span class="py-1 px-2 bg-indigo-600 rounded-md text-sm">#{{ index + 1 }}</span>
+              <div class="flex w-min-full text-gray-300 tracking-wider font-medium">
+                <div class="w-2/6 py-3 leading-4">Name</div>
+                <div class="w-1/6 py-3 leading-4 hidden md:block">Profile</div>
+                <div class="w-1/6 py-3 leading-4">Weight</div>
+                <div class="w-1/6 py-3 leading-4">Skills</div>
+                <div class="w-1/6 py-3 leading-4">Catacombs</div>
+                <div class="w-1/6 py-3 leading-4">Slayers</div>
+              </div>
+
+              <div class="flex flex-col space-y-1">
+                <div class="flex flex-col bg-gray-800 rounded-md" v-for="(player, index) of sortedPlayers" :key="player.uuid">
+                  <div class="p-2 flex w-full cursor-pointer" @click="player.collapsed = !player.collapsed">
+                    <div class="w-2/6">
+                      <span class="py-1 px-2 mr-2 bg-indigo-600 rounded-md text-sm"> #{{ index + 1 }} </span>
                       {{ player.username }}
-                    </td>
-                    <td>{{ player.name }}</td>
-                    <td>
-                      <span>{{ formatNumber(player.weight + player.weight_overflow) }}</span>
-                    </td>
-                    <td>
+                    </div>
+                    <div class="w-1/6 hidden md:block">{{ player.name }}</div>
+                    <div class="w-1/6">{{ formatNumber(player.weight + player.weight_overflow) }}</div>
+                    <div class="w-1/6">
                       <span v-if="player.skills == null" class="px-2 py-1 bg-red-400 text-gray-800 text-sm rounded-md">API Disabled</span>
                       <span v-else>{{ formatNumber(player.skills.average_skills) }}</span>
-                    </td>
-                    <td>
-                      <span v-if="player.dungeons == null" class="px-2 py-1 bg-red-400 text-gray-800 text-sm rounded-md">No Catacombs Data</span>
+                    </div>
+                    <div class="w-1/6">
+                      <span v-if="player.dungeons == null" class="px-2 py-1 bg-red-400 text-gray-800 text-sm rounded-md">No Data</span>
                       <span v-else>{{ formatNumber(player.dungeons.types.catacombs.level) }}</span>
-                    </td>
-                    <td>
-                      <span v-if="player.slayers == null" class="px-2 py-1 bg-red-400 text-gray-800 text-sm rounded-md">No Slayer Data</span>
+                    </div>
+                    <div class="w-1/6">
+                      <span v-if="player.slayers == null" class="px-2 py-1 bg-red-400 text-gray-800 text-sm rounded-md">No Data</span>
                       <span v-else>{{ formatNumber(player.slayers.total_experience) }}</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                    </div>
+                  </div>
+
+                  <transition-element>
+                    <div v-if="!player.collapsed" class="p-2 flex w-full border-t-2 border-gray-700">
+                      <pre>{{ player }}</pre>
+                    </div>
+                  </transition-element>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -201,7 +204,10 @@ export default {
           },
         })
         .then(response => {
-          this.players.push(response.data.data)
+          this.players.push({
+            collapsed: true,
+            ...response.data.data,
+          })
 
           if (this.guild.members.length > 0) {
             this.task = setTimeout(() => this.scanPlayer(this.guild.members.shift()), 1000)
