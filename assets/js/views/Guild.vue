@@ -7,10 +7,13 @@
           <span class="font-semibold text-indigo-300">{{ guild.name }}</span>
         </h1>
         <transition-element>
-          <p class="text-gray-500 text-2xl" v-if="players.length < totalMembers">
-            Scanning <span class="font-semibold text-indigo-300">{{ players.length + 1 }}</span> out of
-            <span class="font-semibold text-indigo-300">{{ totalMembers }}</span> members
-          </p>
+          <div class="inline-flex items-center text-gray-500 text-2xl" v-if="players.length < totalMembers">
+            <loading-icon styles="w-5 h-5 mt-1 mr-2" />
+            <span>
+              Scanning <span class="font-semibold text-indigo-300">{{ players.length + 1 }}</span> out of
+              <span class="font-semibold text-indigo-300">{{ totalMembers }}</span> members
+            </span>
+          </div>
           <div v-else>
             <p class="py-4 text-gray-500 text-3xl">Guild Stats</p>
 
