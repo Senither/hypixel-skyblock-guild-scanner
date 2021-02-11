@@ -1,0 +1,23 @@
+version: '3'
+services:
+  website:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: senither/hypixel-skyblock-guild-scanner
+    ports:
+      - 8080:80
+    networks:
+      - scanner
+    depends_on:
+      - facade
+  facade:
+    restart: unless-stopped
+    image: senither/hypixel-skyblock-facade
+    networks:
+      - scanner
+
+networks:
+  scanner:
+    driver: bridge
