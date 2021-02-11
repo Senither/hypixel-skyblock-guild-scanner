@@ -105,7 +105,7 @@ export default {
       this.isLoading = true
 
       axios
-        .get(`/guild?key=${this.$store.getters.token}&name=${this.name}`)
+        .get(`https://api.hypixel.net/guild?key=${this.$store.getters.token}&name=${this.name}`)
         .then(response => {
           this.isLoading = false
 

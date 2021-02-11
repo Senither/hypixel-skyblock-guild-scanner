@@ -201,7 +201,7 @@ export default {
   methods: {
     scanPlayer(member) {
       axios
-        .get(`https://hypixel-api.senither.com/v1/profiles/${this.parseStringifiedUuid(member.uuid)}/weight`, {
+        .get(`/v1/profiles/${this.parseStringifiedUuid(member.uuid)}/weight`, {
           headers: {
             Authorization: this.$store.getters.token,
           },

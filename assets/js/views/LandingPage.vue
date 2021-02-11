@@ -132,7 +132,7 @@ export default {
       this.isLoading = true
 
       axios
-        .get(`/key?key=${this.hypixelToken.trim()}`)
+        .get(`https://api.hypixel.net/key?key=${this.hypixelToken.trim()}`)
         .then(response => {
           this.$store.commit('SET_TOKEN', this.hypixelToken.trim())
 
