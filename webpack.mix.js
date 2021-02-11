@@ -1,5 +1,11 @@
+const config = require('./config')
 const mix = require('laravel-mix')
 const tailwindcss = require('tailwindcss')
+require('laravel-mix-definitions')
+
+mix.definition({
+  facadeBaseUrl: `'${config.facadeBaseUrl}'`
+})
 
 mix
   .js('assets/js/app.js', 'public/js')

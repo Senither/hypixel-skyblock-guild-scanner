@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Axios from 'axios'
 
 window.axios = Axios.create({
-  baseURL: 'https://hypixel-api.senither.com/',
+  baseURL: facadeBaseUrl,
   timeout: 10000
 })
 
