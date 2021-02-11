@@ -7,11 +7,11 @@ services:
       dockerfile: Dockerfile
     image: senither/hypixel-skyblock-guild-scanner
     ports:
-      - 8080:80
+      - '${APP_PORT:-8080}:80'
     depends_on:
       - facade
   facade:
     restart: unless-stopped
     image: senither/hypixel-skyblock-facade
     ports:
-      - 9281:9281
+      - '${API_PORT:-9281}:9281'
