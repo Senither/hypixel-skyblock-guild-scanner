@@ -4,5 +4,5 @@ module.exports = {
    * you can use the IP of the server the API is hosted on combined
    * with the port defined in the config for the API.
    */
-  facadeBaseUrl: 'facade'
+  facadeBaseUrl: 'http://localhost:9281/'
 }
