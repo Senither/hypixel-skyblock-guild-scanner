@@ -230,6 +230,20 @@ export default {
 
       return String(decimalsFormated).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     },
+
+    calculateAverageWeight(type, min = 5) {
+      let countedPlayers = 0
+      let value = 0
+
+      this.players.forEach(player => {
+        if (player[type] && player[type].weight > min) {
+          countedPlayers++
+          value += player[type].weight + player[type].weight_overflow
+        }
+      })
+
+      return value / countedPlayers
+    },
   },
 
   computed: {
@@ -252,27 +266,11 @@ export default {
     },
 
     guildWeights() {
-      // Maxes out a level 50 average guild at 500 skill points, and
-      // setting the middle point in terms of points at level 41,
-      // which is the middle point in terms of XP in the game
-      let skills = Math.pow(this.guildAverages.skills * 10, 0.5 + this.guildAverages.skills / 100)
-
-      // Calculates the catacomb weight by powering it by 2, and then
-      // dividing the result by 8.333, this will end up rewarding
-      // 300 points at max level on a soft exponential curve.
-      let dungeons = Math.pow(this.guildAverages.dungeons, 2) / 8.3333333333333333
-
-      // Calcualtes the slayer weight with a flat curve,
-      // giving 1 point every 12,000 average slayer up
-      // to 3,000,000 XP, the weight past the 3 million
-      // limit is first divided by 18,000, and then
-      // reducded by 10%
-      let slayerOverflow = 3000000 - this.guildAverages.slayers
-      let slayers = slayerOverflow > 0 ? this.guildAverages.slayers / 12000 : (this.guildAverages.slayers + slayerOverflow) / 12000
-
-      if (slayerOverflow < 0) {
-        slayers += Math.pow((slayerOverflow * -1) / 18000, 0.9)
-      }
+      // Calculates the weights for skills, slayers, and dungeons
+      // for all the players that have been loaded.
+      let skills = this.calculateAverageWeight('skills')
+      let slayers = this.calculateAverageWeight('slayers')
+      let dungeons = this.calculateAverageWeight('dungeons')
 
       // Creates the multiplier, where the max value is 1 at 125 members
       // which is the guild member limit on Hypixel, guilds with less
