@@ -213,7 +213,7 @@ export default {
           })
 
           if (this.guild.members.length > 0) {
-            this.task = setTimeout(() => this.scanPlayer(this.guild.members.shift()), 1000)
+            this.task = setTimeout(() => this.scanPlayer(this.guild.members.shift()), 250)
           }
         })
         .catch(error => {
