@@ -59,6 +59,17 @@
           </div>
         </div>
       </section>
+
+      <section class="pb-8" v-else-if="isTokenInStorage">
+        <div class="max-w-screen-lg mx-auto">
+          <div class="py-6 text-base text-center">
+            <p class="text-gray-500">
+              Your Hypixel token is currently saved in your local storage.
+              <br />You can <a @click="clearStorage" class="text-indigo-500 cursor-pointer hover:underline">click here</a> to remove it from storage and return to the home page.
+            </p>
+          </div>
+        </div>
+      </section>
     </transition-element>
   </div>
 </template>
@@ -136,6 +147,20 @@ export default {
       this.guild = null
 
       this.$refs.name.focus()
+    },
+
+    clearStorage() {
+      window.localStorage.clear()
+
+      return this.$router.push({
+        name: 'landing-page',
+      })
+    },
+  },
+
+  computed: {
+    isTokenInStorage() {
+      return window.localStorage.getItem('token') != null
     },
   },
 }

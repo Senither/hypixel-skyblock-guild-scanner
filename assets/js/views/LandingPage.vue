@@ -31,7 +31,7 @@
 
     <section class="py-6 text-center">
       <a
-        @click="showModal = true"
+        @click="openTokenModal"
         class="py-4 px-6 bg-indigo-800 hover:bg-indigo-700 focus:bg-indigo-700 text-xl font-semibold leading-loose rounded-md shadow-lg cursor-pointer"
       >
         I'm ready to scan a guild
@@ -69,6 +69,16 @@
               <ul class="text-sm text-red-400">
                 <li v-for="error of errors" :key="error">{{ error }}</li>
               </ul>
+            </div>
+
+            <div class="mt-2">
+              <label class="inline-flex items-center mt-3">
+                <input type="checkbox" v-model="saveToken" class="form-checkbox h-5 w-5 text-gray-900" />
+                <span class="ml-2 text-sm text-gray-400">Save my API token for later usage.</span>
+              </label>
+              <p class="p-2 text-sm text-gray-400 bg-gray-600">
+                Your API token will be stored locally on your device so you can easily scan guilds in the future.
+              </p>
             </div>
           </div>
         </template>
@@ -116,12 +126,35 @@ export default {
     return {
       showModal: false,
       isLoading: false,
+      saveToken: true,
       hypixelToken: '',
       errors: [],
     }
   },
 
   methods: {
+    openTokenModal() {
+      if (window.localStorage.getItem('token') == null) {
+        return (this.showModal = true)
+      }
+
+      this.hypixelToken = window.localStorage.getItem('token').trim()
+
+      this.validateHypixelToken()
+      if (this.errors.length == 0) {
+        this.$store.commit('SET_TOKEN', this.hypixelToken)
+
+        return this.$router.push({
+          name: 'select-guild',
+        })
+      }
+
+      window.localStorage.removeItem('token')
+      this.hypixelToken = ''
+
+      this.showModal = true
+    },
+
     verifyApiKey() {
       this.validateHypixelToken()
 
@@ -135,6 +168,10 @@ export default {
         .get(`https://api.hypixel.net/key?key=${this.hypixelToken.trim()}`)
         .then(response => {
           this.$store.commit('SET_TOKEN', this.hypixelToken.trim())
+
+          if (this.saveToken) {
+            window.localStorage.setItem('token', this.hypixelToken.trim())
+          }
 
           this.$router.push({
             name: 'select-guild',
