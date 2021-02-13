@@ -10,18 +10,65 @@
     <section class="py-6">
       <div class="max-w-screen-lg mx-auto">
         <div class="bg-gray-800 px-8 py-6 lg:rounded-md text-base shadow-2xl">
+          <p class="pb-2 font-medium">A super simple, and easy to use guild scanner!</p>
+          <p class="pb-2">
+            To get started you'll need to use your Hypixel API token, if you don't already have one you can get your own token by logging into the game at
+            <code class="py-0.5 px-1 bg-gray-900 rounded-sm">mc.hypixel.net</code> and running <code class="py-0.5 px-1 bg-gray-900 rounded-sm">/api new</code>
+          </p>
           <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet eius, modi nostrum a doloremque magnam officiis culpa accusamus sed praesentium
-            asperiores! Molestiae quo voluptates aliquam natus qui quod ipsa cupiditate?
+            Once you have your API token you can click on the <span class="italic text-gray-400">"I'm ready to scan a guild"</span> button to start a guild
+            scan.
           </p>
 
-          <div class="py-4 grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <question v-for="_ of [1, 2, 3, 4, 5, 6]" :key="_">
-              <template #question> Lorem ipsum dolor sit amet consectetur adipisicing elit. </template>
+          <div class="py-4 grid grid-cols-1 gap-2">
+            <question>
+              <template #question> How do I select the guild I want to scan? </template>
 
               <template #answer>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non animi rerum pariatur laudantium! Animi accusamus recusandae praesentium vel beatae
-                voluptas aperiam esse voluptatum autem, quas dolores, laborum mollitia ex assumenda!
+                <p class="pb-2 pl-2">
+                  You'll first need to press the <span class="italic text-gray-400">"I'm ready to scan a guild"</span> button below, doing this will prompt you
+                  to enter your Hypixel API token, you can see how to get an API token above, after you have entered the token into the input field and verified
+                  you'll be greeted with this page.
+                </p>
+
+                <img class="rounded-md shadow-md" src="/img/guild-select-example.png" alt="Guild select example" />
+
+                <p class="px-2 pt-2">
+                  From here you can enter the name of the guild you want to scan and press the <span class="italic text-gray-400">"Lookup"</span> button, if a
+                  guild exists with the name you entered you can then select the guild to be scanned.
+                </p>
+              </template>
+            </question>
+
+            <question>
+              <template #question> How does the guild scanner actually look like? </template>
+
+              <template #answer>
+                <p class="px-2 pb-2">After a guild scan has been completed you'll see this page.</p>
+
+                <img class="rounded-md shadow-md" src="/img/guild-scan-example.png" alt="Guild scan example" />
+              </template>
+            </question>
+
+            <question>
+              <template #question> Does the guild scanner save my Hypixel API token? </template>
+
+              <template #answer>
+                <p class="px-2 pb-2">The short answer is no, but maybe yes?</p>
+
+                <p class="px-2 pb-2">
+                  The slightly longer answer is that the entire guild scanner app is a
+                  <a class="text-indigo-400 hover:text-indigo-500 hover:underline" href="https://en.wikipedia.org/wiki/Stateless_protocol">stateless app</a>,
+                  this means that no data about you or anyone else who visit the site is saved on any remote server, because of this it's impossible to store
+                  your Hypixel token, however the app uses a smart trick called
+                  <a class="text-indigo-400 hover:text-indigo-500 hover:underline" href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage"
+                    >local storage</a
+                  >, this allows the app to save your Hypixel token to your own device, and then ask your device for the token the next time you view the site,
+                  this is only done to make it easier to use the site, however if you select that your Hypixel token should not be saved then nothing will be
+                  saved to your local storage.
+                </p>
+
+                <p>If you still don't quite trust the app you can view the entire <a class="text-indigo-400 hover:text-indigo-500 hover:underline" href="https://github.com/Senither/hypixel-skyblock-guild-scanner">source code here</a>.</p>
               </template>
             </question>
           </div>

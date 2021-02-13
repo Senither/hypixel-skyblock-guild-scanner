@@ -3,6 +3,8 @@ Hypixel Guild Scanner
 
 A [VueJS](https://vuejs.org/) and [TailwindCSS](https://tailwindcss.com/) app that makes it easy to scan [Hypixel SkyBlock](https://hypixel.net/) guilds to get guild averages and guild player stats, this system utilizes the [Hypixel SkyBlock Facade](https://github.com/Senither/hypixel-skyblock-facade) API to make fetching player information a lot easier.
 
+![Guild scan example](public/img/guild-scan-example.png "Guild scan example for Trouble Brewing")
+
 ## Table of Content
 
 - [Installation using NodeJS](#installation-using-nodejs)
