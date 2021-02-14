@@ -41,7 +41,7 @@
             </question>
 
             <question>
-              <template #question> How does the guild scanner actually look like? </template>
+              <template #question> What does the guild scanner actually look like? </template>
 
               <template #answer>
                 <p class="px-2 pb-2">After a guild scan has been completed you'll see this page.</p>
