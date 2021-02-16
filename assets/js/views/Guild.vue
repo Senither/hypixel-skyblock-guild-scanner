@@ -146,6 +146,27 @@
                       <player-skills :skills="player.skills" />
                       <player-slayers :slayers="player.slayers" />
                       <player-dungeons :dungeons="player.dungeons" />
+
+                      <div class="p-2 grid grid-cols-3 gap-4 text-center text-gray-400">
+                        <a
+                          class="px-4 py-2 bg-gray-900 rounded-sm shadow-md hover:text-gray-300 hover:bg-gray-700"
+                          :href="`https://sky.shiiyu.moe/stats/${player.username}/${player.name}`"
+                          target="blank"
+                          >View on sky.shiiyu.moe</a
+                        >
+                        <a
+                          class="px-4 py-2 bg-gray-900 rounded-sm shadow-md hover:text-gray-300 hover:bg-gray-700"
+                          :href="`https://namemc.com/profile/${player.username}`"
+                          target="blank"
+                          >View on NameMC</a
+                        >
+                        <a
+                          class="px-4 py-2 bg-gray-900 rounded-sm shadow-md hover:text-gray-300 hover:bg-gray-700"
+                          :href="`https://plancke.io/hypixel/player/stats/${player.username}`"
+                          target="blank"
+                          >View on Plancke</a
+                        >
+                      </div>
                     </div>
                   </transition-element>
                 </div>
