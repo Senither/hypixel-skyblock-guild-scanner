@@ -2,7 +2,7 @@
   <div class="py-4 flex flex-col items-center" v-if="slayers != null">
     <p class="text-lg font-semibold">Slayers</p>
     <div class="my-2 flex text-sm">
-      <span class="py-1 px-2 bg-gray-900 font-semibold rounded-l-md">Slayers Weight</span>
+      <span class="py-1 px-2 bg-gray-900 font-semibold rounded-l-md">Slayer Weight</span>
       <span class="py-1 px-2 bg-indigo-600 rounded-r-md">{{ formatNumber(slayers.weight + slayers.weight_overflow) }}</span>
     </div>
 

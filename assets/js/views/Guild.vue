@@ -142,9 +142,10 @@
                   </div>
 
                   <transition-element>
-                    <div v-if="player.collapsed" class="p-2 w-full border-t-2 border-gray-700">
+                    <div v-if="!player.collapsed" class="p-2 w-full border-t-2 border-gray-700">
                       <player-skills :skills="player.skills" />
                       <player-slayers :slayers="player.slayers" />
+                      <player-dungeons :dungeons="player.dungeons" />
                     </div>
                   </transition-element>
                 </div>
@@ -170,6 +171,7 @@ import TransitionElement from '@/components/TransitionElement'
 import LoadingIcon from '@/components/LoadingIcon'
 import PlayerSkills from './partials/PlayerSkills'
 import PlayerSlayers from './partials/PlayerSlayers'
+import PlayerDungeons from './partials/PlayerDungeons'
 
 export default {
   mixins: [formatNumber],
@@ -179,6 +181,7 @@ export default {
     LoadingIcon,
     PlayerSkills,
     PlayerSlayers,
+    PlayerDungeons,
   },
 
   mounted() {
