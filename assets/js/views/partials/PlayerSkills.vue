@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center" v-if="skills != null">
+  <div class="py-4 flex flex-col items-center" v-if="skills != null">
     <p class="text-lg font-semibold">Skills</p>
     <div class="my-2 flex text-sm">
       <span class="py-1 px-2 bg-gray-900 font-semibold rounded-l-md">Skill Weight</span>
