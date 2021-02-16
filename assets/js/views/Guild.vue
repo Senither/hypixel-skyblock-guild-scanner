@@ -142,8 +142,8 @@
                   </div>
 
                   <transition-element>
-                    <div v-if="!player.collapsed" class="p-2 flex w-full border-t-2 border-gray-700">
-                      <pre>{{ player }}</pre>
+                    <div v-if="player.collapsed" class="p-2 w-full border-t-2 border-gray-700">
+                      <player-skills :skills="player.skills" />
                     </div>
                   </transition-element>
                 </div>
@@ -163,13 +163,19 @@
 </template>
 
 <script>
+import formatNumber from '../mixins/FormatNumber'
+
 import TransitionElement from '@/components/TransitionElement'
 import LoadingIcon from '@/components/LoadingIcon'
+import PlayerSkills from './partials/PlayerSkills'
 
 export default {
+  mixins: [formatNumber],
+
   components: {
     TransitionElement,
     LoadingIcon,
+    PlayerSkills,
   },
 
   mounted() {
@@ -223,12 +229,6 @@ export default {
 
     parseStringifiedUuid(uuid) {
       return uuid.substr(0, 8) + '-' + uuid.substr(8, 4) + '-' + uuid.substr(12, 4) + '-' + uuid.substr(16, 4) + '-' + uuid.substr(20)
-    },
-
-    formatNumber(number) {
-      const decimalsFormated = number.toLocaleString(undefined, { maximumFractionDigits: 2 })
-
-      return String(decimalsFormated).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     },
 
     calculateAverageWeight(type, min = 5) {
