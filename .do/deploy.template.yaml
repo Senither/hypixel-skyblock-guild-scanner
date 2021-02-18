@@ -1,0 +1,13 @@
+name: hypixel-skyblock-guild-scanner
+region: ams
+static_sites:
+- dockerfile_path: Dockerfile
+  github:
+    branch: master
+    deploy_on_push: true
+    repo: Senither/hypixel-skyblock-guild-scanner
+  name: hypixel-skyblock-guild-scanner
+  output_dir: /usr/local/apache2/htdocs/
+  error_document: index.html
+  routes:
+  - path: /

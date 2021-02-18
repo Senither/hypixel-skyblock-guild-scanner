@@ -14,6 +14,9 @@ A [VueJS](https://vuejs.org/) and [TailwindCSS](https://tailwindcss.com/) app th
 - [Installation using Docker](#installation-using-docker)
   - [Prerequisites](#prerequisites-1)
   - [Setup Guide](#setup-guide-1)
+- [Deploy directly to DigitalOcean](#deploy-directly-to-digitalocean)
+  - [Prerequisites](#prerequisites-2)
+  - [Setup Guide](#setup-guide-2)
 - [License](#license)
 
 ## Installation using NodeJS
@@ -23,8 +26,8 @@ A [VueJS](https://vuejs.org/) and [TailwindCSS](https://tailwindcss.com/) app th
 > Items with a * in front of their name are only required if you want you use the Laravel [Mix versioning](https://laravel-mix.com/docs/5.0/versioning). 
 
 - NodeJS >= 14
-- *PHP >= 7.4
-- *Composer >= 2
+- \*PHP >= 7.4
+- \*Composer >= 2
 
 ### Setup Guide
 
@@ -77,6 +80,21 @@ Next go into the `hypixel-skyblock-guild-scanner` folder and start the app.
 The first time the app starts it will build all the containers which may take some time, after it's done it should startup both the guild scanner listening on port `8080`, and the [facade API](https://github.com/Senither/hypixel-skyblock-facade) listening on port `9281` which the guild scanner depends on for loading player information, you can customize either of these ports by editing the `docker-compose.yml` file, or setting the `APP_PORT` and `API_PORT` environment variables.
 
 And you're done!
+
+## Deploy directly to DigitalOcean
+
+### Prerequisites
+
+You'll need a [DigitalOcean Account](https://m.do.co/c/9f589c4101c3) to deploy directly to DO, if you don't already have an account you can use the referral link below to get some free credits so you can try hosting the API for free.
+
+Referral link: https://m.do.co/c/9f589c4101c3
+
+### Setup Guide
+
+Click the button below to deploy the app to the DigitalOcean App Platform, from there just follow the setup instructions, and once the application have been built and deployed to the DigitalOcean App Platform you'll get a URL where you can access the API.
+
+[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/Senither/hypixel-skyblock-guild-scanner/tree/master)
+
 
 ## License
 
