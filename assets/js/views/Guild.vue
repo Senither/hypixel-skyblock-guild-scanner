@@ -70,7 +70,7 @@
               class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
               :class="{
                 'bg-gray-800': sortBy == 'weight',
-                'bg-gray-700': sortBy != 'weight',
+                'bg-gray-700': sortBy != 'weight'
               }"
               @click="sortBy = 'weight'"
             >
@@ -80,7 +80,7 @@
               class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
               :class="{
                 'bg-gray-800': sortBy == 'skills',
-                'bg-gray-700': sortBy != 'skills',
+                'bg-gray-700': sortBy != 'skills'
               }"
               @click="sortBy = 'skills'"
             >
@@ -90,7 +90,7 @@
               class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
               :class="{
                 'bg-gray-800': sortBy == 'dungeons',
-                'bg-gray-700': sortBy != 'dungeons',
+                'bg-gray-700': sortBy != 'dungeons'
               }"
               @click="sortBy = 'dungeons'"
             >
@@ -100,7 +100,7 @@
               class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
               :class="{
                 'bg-gray-800': sortBy == 'slayers',
-                'bg-gray-700': sortBy != 'slayers',
+                'bg-gray-700': sortBy != 'slayers'
               }"
               @click="sortBy = 'slayers'"
             >
@@ -120,7 +120,12 @@
 
               <div class="flex flex-col space-y-1">
                 <div class="flex flex-col bg-gray-800 rounded-md" v-for="(player, index) of sortedPlayers" :key="player.uuid">
-                  <div class="p-2 flex w-full cursor-pointer" @click="player.collapsed = !player.collapsed">
+                  <div v-if="player.hasOwnProperty('error')" class="p-2 flex w-full bg-red-400 opacity-5 rounded-md">
+                    <span class="py-1 px-2 mr-2 bg-indigo-600 rounded-md text-sm"> #{{ index + 1 }} </span>
+                    Couldn't find any SkyBlock profiles for <span class="ml-2 font-semibold">{{ parseStringifiedUuid(player.member.uuid) }}</span>
+                  </div>
+
+                  <div v-else class="p-2 flex w-full cursor-pointer" @click="player.collapsed = !player.collapsed">
                     <div class="w-2/6">
                       <span class="py-1 px-2 mr-2 bg-indigo-600 rounded-md text-sm"> #{{ index + 1 }} </span>
                       {{ player.username }}
@@ -202,13 +207,13 @@ export default {
     LoadingIcon,
     PlayerSkills,
     PlayerSlayers,
-    PlayerDungeons,
+    PlayerDungeons
   },
 
   mounted() {
     if (this.$store.getters.token == null) {
       return this.$router.push({
-        name: 'landing-page',
+        name: 'landing-page'
       })
     }
 
@@ -227,7 +232,7 @@ export default {
       totalMembers: this.$store.getters.guild.members.length,
       players: [],
       sortBy: 'weight',
-      task: null,
+      task: null
     }
   },
 
@@ -236,13 +241,13 @@ export default {
       axios
         .get(`/v1/profiles/${this.parseStringifiedUuid(member.uuid)}/weight`, {
           headers: {
-            Authorization: this.$store.getters.token,
-          },
+            Authorization: this.$store.getters.token
+          }
         })
         .then(response => {
           this.players.push({
             collapsed: true,
-            ...response.data.data,
+            ...response.data.data
           })
 
           if (this.guild.members.length > 0) {
@@ -250,7 +255,25 @@ export default {
           }
         })
         .catch(error => {
-          console.error(error)
+          switch (error.response.status) {
+            case 404:
+              this.players.push({
+                collapsed: true,
+                error: 404,
+                member: member
+              })
+
+              if (this.guild.members.length > 0) {
+                this.task = setTimeout(() => this.scanPlayer(this.guild.members.shift()), 250)
+              }
+              break
+
+            case 429:
+              return (this.task = setTimeout(() => this.scanPlayer(member), 10000))
+
+            default:
+              console.error(error)
+          }
         })
     },
 
@@ -270,7 +293,7 @@ export default {
       })
 
       return value / countedPlayers
-    },
+    }
   },
 
   computed: {
@@ -280,6 +303,10 @@ export default {
       let dungeons = 0
 
       for (let player of this.players) {
+        if (player.hasOwnProperty('error')) {
+          continue
+        }
+
         skills += player.skills == null ? 0 : player.skills.average_skills
         slayers += player.slayers == null ? 0 : player.slayers.total_experience
         dungeons += player.dungeons == null ? 0 : player.dungeons.types.catacombs.level
@@ -288,7 +315,7 @@ export default {
       return {
         skills: (skills / this.totalMembers).toFixed(2),
         slayers: (slayers / this.totalMembers).toFixed(2),
-        dungeons: (dungeons / this.totalMembers).toFixed(2),
+        dungeons: (dungeons / this.totalMembers).toFixed(2)
       }
     },
 
@@ -316,12 +343,16 @@ export default {
         skills: parseFloat(skills.toFixed(3)),
         slayers: parseFloat(slayers.toFixed(3)),
         dungeons: parseFloat(dungeons.toFixed(3)),
-        multiplier: parseFloat(multiplier.toFixed(3)),
+        multiplier: parseFloat(multiplier.toFixed(3))
       }
     },
 
     sortedPlayers() {
       const extractProperty = player => {
+        if (player.hasOwnProperty('error')) {
+          return -1
+        }
+
         switch (this.sortBy) {
           case 'skills':
             return player.skills == null ? 0 : player.skills.average_skills
@@ -340,7 +371,7 @@ export default {
       return this.players.sort((p1, p2) => {
         return extractProperty(p2) > extractProperty(p1) ? 1 : -1
       })
-    },
-  },
+    }
+  }
 }
 </script>
