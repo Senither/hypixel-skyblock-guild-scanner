@@ -239,11 +239,7 @@ export default {
   methods: {
     scanPlayer(member) {
       axios
-        .get(`/v1/profiles/${this.parseStringifiedUuid(member.uuid)}/weight`, {
-          headers: {
-            Authorization: this.$store.getters.token
-          }
-        })
+        .get(`/v1/profiles/${this.parseStringifiedUuid(member.uuid)}/weight?key=${this.$store.getters.token}`)
         .then(response => {
           this.players.push({
             collapsed: true,
