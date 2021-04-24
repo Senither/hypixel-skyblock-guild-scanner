@@ -314,23 +314,39 @@ export default {
   computed: {
     guildAverages() {
       let skills = 0
+      let skillsMembers = 0
+
       let slayers = 0
+      let slayersMembers = 0
+
       let dungeons = 0
+      let dungeonsMembers = 0
 
       for (let player of this.players) {
         if (player.hasOwnProperty('error')) {
           continue
         }
 
-        skills += player.skills == null ? 0 : player.skills.average_skills
-        slayers += player.slayers == null ? 0 : player.slayers.total_experience
-        dungeons += player.dungeons == null ? 0 : player.dungeons.types.catacombs.level
+        if (player.skills != null && player.skills.average_skills > 5) {
+          skills += player.skills.average_skills
+          skillsMembers++
+        }
+
+        if (player.slayers != null && player.slayers.total_experience > 500) {
+          slayers += player.slayers.total_experience
+          slayersMembers++
+        }
+
+        if (player.dungeons != null && player.dungeons.types.catacombs.level > 3) {
+          dungeons += player.dungeons.types.catacombs.level
+          dungeonsMembers++
+        }
       }
 
       return {
-        skills: (skills / this.totalMembers).toFixed(2),
-        slayers: (slayers / this.totalMembers).toFixed(2),
-        dungeons: (dungeons / this.totalMembers).toFixed(2)
+        skills: (skills / skillsMembers).toFixed(2),
+        slayers: (slayers / slayersMembers).toFixed(2),
+        dungeons: (dungeons / dungeonsMembers).toFixed(2)
       }
     },
 
