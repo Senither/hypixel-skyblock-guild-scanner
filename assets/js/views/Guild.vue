@@ -251,6 +251,25 @@ export default {
           }
         })
         .catch(error => {
+          // If the response is undefined we might have a Networking issue,
+          // or a CORS issue, in this case we'll attempt to send
+          // the request again a few times.
+          if (error.response == undefined) {
+            if (!member.hasOwnProperty('attempts')) {
+              member.attempts = 0
+            }
+
+            if (++member.attempts < 5) {
+              return (this.task = setTimeout(() => this.scanPlayer(member), 500 * member.attempts))
+            }
+
+            console.warn('Failed to load player data for ' + member.uuid)
+            console.warn('An unknown error has caused this issue to occure, you can see the error below.')
+            console.error(error)
+
+            return
+          }
+
           switch (error.response.status) {
             case 404:
               this.players.push({
