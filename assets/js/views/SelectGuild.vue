@@ -65,7 +65,8 @@
           <div class="py-6 text-base text-center">
             <p class="text-gray-500">
               Your Hypixel token is currently saved in your local storage.
-              <br />You can <a @click="clearStorage" class="text-indigo-500 cursor-pointer hover:underline">click here</a> to remove it from storage and return to the home page.
+              <br />You can <a @click="clearStorage" class="text-indigo-500 cursor-pointer hover:underline">click here</a> to remove it from storage and return
+              to the home page.
             </p>
           </div>
         </div>

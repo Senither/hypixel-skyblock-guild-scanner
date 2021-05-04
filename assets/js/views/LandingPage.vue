@@ -68,7 +68,12 @@
                   saved to your local storage.
                 </p>
 
-                <p>If you still don't quite trust the app you can view the entire <a class="text-indigo-400 hover:text-indigo-500 hover:underline" href="https://github.com/Senither/hypixel-skyblock-guild-scanner">source code here</a>.</p>
+                <p>
+                  If you still don't quite trust the app you can view the entire
+                  <a class="text-indigo-400 hover:text-indigo-500 hover:underline" href="https://github.com/Senither/hypixel-skyblock-guild-scanner">
+                    source code here </a
+                  >.
+                </p>
               </template>
             </question>
           </div>

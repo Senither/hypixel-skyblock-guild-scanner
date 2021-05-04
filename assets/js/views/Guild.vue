@@ -70,7 +70,7 @@
               class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
               :class="{
                 'bg-gray-800': sortBy == 'weight',
-                'bg-gray-700': sortBy != 'weight'
+                'bg-gray-700': sortBy != 'weight',
               }"
               @click="sortBy = 'weight'"
             >
@@ -80,7 +80,7 @@
               class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
               :class="{
                 'bg-gray-800': sortBy == 'skills',
-                'bg-gray-700': sortBy != 'skills'
+                'bg-gray-700': sortBy != 'skills',
               }"
               @click="sortBy = 'skills'"
             >
@@ -90,7 +90,7 @@
               class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
               :class="{
                 'bg-gray-800': sortBy == 'dungeons',
-                'bg-gray-700': sortBy != 'dungeons'
+                'bg-gray-700': sortBy != 'dungeons',
               }"
               @click="sortBy = 'dungeons'"
             >
@@ -100,7 +100,7 @@
               class="flex-1 py-3 lg:rounded-t-md hover:bg-gray-800 text-center cursor-pointer"
               :class="{
                 'bg-gray-800': sortBy == 'slayers',
-                'bg-gray-700': sortBy != 'slayers'
+                'bg-gray-700': sortBy != 'slayers',
               }"
               @click="sortBy = 'slayers'"
             >
@@ -207,13 +207,13 @@ export default {
     LoadingIcon,
     PlayerSkills,
     PlayerSlayers,
-    PlayerDungeons
+    PlayerDungeons,
   },
 
   mounted() {
     if (this.$store.getters.token == null) {
       return this.$router.push({
-        name: 'landing-page'
+        name: 'landing-page',
       })
     }
 
@@ -232,7 +232,7 @@ export default {
       totalMembers: this.$store.getters.guild.members.length,
       players: [],
       sortBy: 'weight',
-      task: null
+      task: null,
     }
   },
 
@@ -243,7 +243,7 @@ export default {
         .then(response => {
           this.players.push({
             collapsed: true,
-            ...response.data.data
+            ...response.data.data,
           })
 
           if (this.guild.members.length > 0) {
@@ -275,7 +275,7 @@ export default {
               this.players.push({
                 collapsed: true,
                 error: 404,
-                member: member
+                member: member,
               })
 
               if (this.guild.members.length > 0) {
@@ -308,7 +308,7 @@ export default {
       })
 
       return value / countedPlayers
-    }
+    },
   },
 
   computed: {
@@ -346,7 +346,7 @@ export default {
       return {
         skills: (skills / skillsMembers).toFixed(2),
         slayers: (slayers / slayersMembers).toFixed(2),
-        dungeons: (dungeons / dungeonsMembers).toFixed(2)
+        dungeons: (dungeons / dungeonsMembers).toFixed(2),
       }
     },
 
@@ -374,7 +374,7 @@ export default {
         skills: parseFloat(skills.toFixed(3)),
         slayers: parseFloat(slayers.toFixed(3)),
         dungeons: parseFloat(dungeons.toFixed(3)),
-        multiplier: parseFloat(multiplier.toFixed(3))
+        multiplier: parseFloat(multiplier.toFixed(3)),
       }
     },
 
@@ -402,7 +402,7 @@ export default {
       return this.players.sort((p1, p2) => {
         return extractProperty(p2) > extractProperty(p1) ? 1 : -1
       })
-    }
-  }
+    },
+  },
 }
 </script>
