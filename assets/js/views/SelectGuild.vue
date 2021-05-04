@@ -129,9 +129,21 @@ export default {
           this.guild = guild
         })
         .catch(error => {
-          console.error('Unexpected error occurred: ', error)
+          this.isLoading = false
 
-          this.error = 'Unexpected error occurred: ' + error.message
+          switch (error.response.status) {
+            case 403:
+              this.error = 'Your Hypixel API token is invalid, try removing the token from the app, generating a new token and using that instead.'
+
+              setTimeout(() => this.clearStorage(), 10000)
+              break
+
+            default:
+              console.error('Unexpected error occurred: ', error)
+
+              this.error = 'Unexpected error occurred: ' + error.message
+              break
+          }
         })
     },
 
